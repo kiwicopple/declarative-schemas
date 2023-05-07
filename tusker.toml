@@ -1,0 +1,16 @@
+[schema]
+filename = "supabase/database//**/*.sql"
+
+[migrations]
+filename = "supabase/migrations/*.sql"
+
+[database]
+host = "localhost"
+port = 54322
+user = "postgres"
+password = "postgres"
+dbname = "postgres"
+
+[migra]
+safe = false
+privileges = false

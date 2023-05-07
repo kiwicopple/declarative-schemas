@@ -1,0 +1,9 @@
+migra==3.0.1663481299
+packaging==23.1
+psycopg2-binary==2.9.6
+schemainspect==3.1.1663587362
+six==1.16.0
+SQLAlchemy==1.4.48
+sqlbag==0.1.1617247075
+tomlkit==0.11.8
+tusker==0.5.1
