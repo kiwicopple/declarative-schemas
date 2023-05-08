@@ -44,3 +44,4 @@ I think we might be better off forking Tusker and running it ourselves while we'
 - This provides filesystem > migrations. we are missing:
   - migrations > filesystem (in case someone edits the migrations directly). Should we support this? We could just have a flag where the user "opts-in" to either a declarative or a migratory path
   - database > filesystem. we might be able to use migra, but then how do we parse the files into the relevant shape? Perhaps we just dump it and let the user decide?
+- Currently there is no good way to handle "unsafe" commands. (for example, if you rename `fruit` to `fruits` it will drop the table and create a new one). I have set the `tusker.toml` config to error out in these cases, but we need a way to capture these and give the user a viable way to rename their table. I don't know what that looks like yet.
