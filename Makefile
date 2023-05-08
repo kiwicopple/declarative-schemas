@@ -1,4 +1,10 @@
 
+# init.template: connects to postgres database and makes an copies "template1" to "template_supabase"
+.PHONY: init.template
+init.template:
+	psql "postgresql://postgres:postgres@localhost:54322/template1" -f template1.sql
+
+
 # Checks if there are any changes on the filesystem that have not created in a migration file
 .PHONY: db.changes
 db.changes:

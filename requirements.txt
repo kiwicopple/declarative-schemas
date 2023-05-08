@@ -6,4 +6,4 @@ six==1.16.0
 SQLAlchemy==1.4.48
 sqlbag==0.1.1617247075
 tomlkit==0.11.8
-tusker==0.5.1
+tusker @ git+https://github.com/kiwicopple/tusker.git@65069d5a875d2cd79c24d1178817ad63fc14565e

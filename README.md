@@ -5,7 +5,7 @@ A proof of concept for declarative schemas.
 ### Pre-reqs
 
 - supabase cli
-- [tusker](https://github.com/bikeshedder/tusker): `pip install tusker`
+- [tusker](https://github.com/kiwicopple/tusker): `pip install git+https://github.com/kiwicopple/tusker.git@supabase`
   - use virtualenv: `pip install virtualenv`
     - `source venv/bin/activate`
     - `pip install -r requirements.txt`
@@ -15,6 +15,7 @@ A proof of concept for declarative schemas.
 ### Getting started
 
 - Start supabase by running `supabase start`
+- run `make init.template` - this will update the `template1` template with relevant Supabase code (like `auth.uid()`). This is a bit of a hack, something that can be improved later.
 - make some changes to the schema in `/supabase/database`
 
 Migration management:
@@ -39,6 +40,7 @@ Creating files:
 
 I think we might be better off forking Tusker and running it ourselves while we're developing this
 
+- we need to make migra/tusker compare to a template that is _not_ template1. At the moment I am modifying the `template1` database with relevant supabase DDL. A more sustainable way to do this will be to create a `template_supbase` template which we can run comparisons against.
 - I had a lot of python warnings/issues running this - incompatibilities between versions and also mac M1 issues
 - The codebase is small enough that it might be easier to replicate it into the CLI as code
 - This provides filesystem > migrations. we are missing:

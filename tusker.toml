@@ -10,6 +10,7 @@ port = 54322
 user = "postgres"
 password = "postgres"
 dbname = "postgres"
+template = "template1"
 
 [migra]
 safe = true
