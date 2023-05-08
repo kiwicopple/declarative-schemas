@@ -17,15 +17,22 @@ A proof of concept for declarative schemas.
 - Start supabase by running `supabase start`
 - make some changes to the schema in `/supabase/database`
 
-
+Migration management:
 
 - `make db.changes` (could be `supabase db changes`)
   - if there are no changes then there will be no output. This can be improved by showing some actual output
 - `make db.commit` (could be `supabase db commit`)
   - commit the files from the declarative structure into a migration
   - I think by default this should run on the local database. We could add a flag so that it just copies to the file system
-- `make db.new.schema` (could be `supabase db new schema`)
-  - creates a new schema file and stores the "create" command in _init.sql
+
+Creating files:
+
+- I think we should have a command `supabase db new` which gives a "wizard" experience. For now I have:
+  - New schema: `make db.new.schema <schema_name>`
+    - creates a new schema file and stores the "create" command in _init.sql
+    - Prepends the schema search path at the top of the file
+  - New Function: [NOT YET IMPLEMENTED]
+    - we should ask the user which schema they want the function to be created in, then run a check to ensure that the schema exists. Add the search path at the top of the file.
 
 ### Fork?
 

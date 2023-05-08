@@ -15,5 +15,6 @@ db.changes:
 # make db.new.schema: creates a new schema file and stores the "create" command in _init.sql
 .PHONY: db.new.schema
 db.new.schema:
-	touch supabase/database/$(filter-out $@,$(MAKECMDGOALS))
+	touch supabase/database/$(filter-out $@,$(MAKECMDGOALS)).sql
+	echo "SET search_path TO \"$(filter-out $@,$(MAKECMDGOALS))\";" >> supabase/database/$(filter-out $@,$(MAKECMDGOALS)).sql
 	echo "\ncreate schema if not exists \"$(filter-out $@,$(MAKECMDGOALS))\";" >> supabase/database/_init.sql
