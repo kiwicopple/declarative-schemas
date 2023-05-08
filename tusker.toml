@@ -12,5 +12,5 @@ password = "postgres"
 dbname = "postgres"
 
 [migra]
-safe = true
+safe = false
 privileges = false
