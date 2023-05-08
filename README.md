@@ -24,6 +24,7 @@ Migration management:
 - `make db.commit` (could be `supabase db commit`)
   - commit the files from the declarative structure into a migration
   - I think by default this should run on the local database. We could add a flag so that it just copies to the file system
+- `supabase db reset`: pick up all the changes
 
 Creating files:
 
