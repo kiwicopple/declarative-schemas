@@ -47,3 +47,27 @@ I think we might be better off forking Tusker and running it ourselves while we'
   - migrations > filesystem (in case someone edits the migrations directly). Should we support this? We could just have a flag where the user "opts-in" to either a declarative or a migratory path
   - database > filesystem. we might be able to use migra, but then how do we parse the files into the relevant shape? Perhaps we just dump it and let the user decide?
 - Currently there is no good way to handle "unsafe" commands. (for example, if you rename `fruit` to `fruits` it will drop the table and create a new one). I have set the `tusker.toml` config to error out in these cases, but we need a way to capture these and give the user a viable way to rename their table. I don't know what that looks like yet.
+
+
+
+
+## User stories
+
+
+### Conflicts
+
+
+There is an issue where the `migrations` folder needs to be alphabetically. This could actually fail in the following scenario:
+
+1. User 1 branches off `main`
+2. User 2 branches off `main`
+3. User 1 makes changes on their branch. They generate a migrations file `1.sql`
+4. User 2 makes changes on their branch. They generate a migrations file `2.sql`
+5. User 2 merges in their branch. `2.sql` migration is run
+6. User 1 merges in their branch. `1.sql` is not run, because `1` comes before `2`:
+
+/migrations
+|- 1.sql
+|- 2.sql
+
+
