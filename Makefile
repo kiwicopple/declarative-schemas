@@ -25,6 +25,17 @@ db.new.schema:
 	echo "\ncreate schema if not exists \"$(filter-out $@,$(MAKECMDGOALS))\";" >> supabase/database/_init.sql
 
 
+
+
+
+# 
+# 
+#  EXPERIMENTAL COMMANDS
+# 
+# 
+
+
+
 # Adds git hooks to run migrations when switching branch
 # TODO: this should pipe the output to the terminal
 .PHONY: init.hooks
