@@ -5,6 +5,21 @@ init.template:
 	psql "postgresql://postgres:postgres@localhost:54322/template1" -f template1.sql
 
 
+# Adds git hooks to run migrations when switching branch
+.PHONY: init.hooks
+init.hooks:
+	touch .git/hooks/post-checkout
+	chmod u+x .git/hooks/post-checkout
+	echo "#!/bin/bash\n\nmake db.changes && supabase db reset" >> .git/hooks/post-checkout
+	@if [ ! -f .git/hooks/post-checkout ]; then \
+		touch .git/hooks/post-checkout; \
+		chmod +x .git/hooks/post-checkout; \
+		echo "#!/bin/bash\n\n" > .git/hooks/post-checkout; \
+	fi
+	@if ! grep -q "make db.changes && supabase db reset" .git/hooks/post-checkout; then \
+		echo "make db.changes && supabase db reset" >> .git/hooks/post-checkout; \
+	fi
+
 # Checks if there are any changes on the filesystem that have not created in a migration file
 .PHONY: db.changes
 db.changes:
