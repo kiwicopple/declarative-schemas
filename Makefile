@@ -26,6 +26,7 @@ db.new.schema:
 
 
 # Adds git hooks to run migrations when switching branch
+# TODO: this should pipe the output to the terminal
 .PHONY: init.hooks
 init.hooks:
 	touch .git/hooks/post-checkout
