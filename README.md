@@ -57,7 +57,7 @@ I think we might be better off forking Tusker and running it ourselves while we'
 ### Conflicts
 
 
-There is an issue where the `migrations` folder needs to be alphabetically. This could actually fail in the following scenario:
+There is an issue where the `migrations` folder needs to be alphabetical. This could actually fail in the following scenario:
 
 1. User 1 branches off `main`
 2. User 2 branches off `main`
@@ -71,3 +71,8 @@ There is an issue where the `migrations` folder needs to be alphabetically. This
 |- 2.sql
 
 
+Possible solution:
+
+- When a branch is merged, we "stage" any migrations in the branch inside the `supabase_migrations` schema. We don't actually apply the migration, we simply push the changes to the migrations table with a git ref, like some sort of "queue"
+- GitHub appears to have a way to block merging of a PR: https://stackoverflow.com/a/75673023/8677079
+- Developers can set up a protection rule: "Require branches to be up to date before merging"

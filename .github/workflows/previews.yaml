@@ -1,0 +1,58 @@
+name: Database Preview
+
+on:
+  pull_request:
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      FLY_ORGANIZATION_SLUG: supabase-dev
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      - id: deployment
+        uses: sweatybridge/fly-preview@main
+        env:
+          # Specifies the base project to branch from
+          PROJECT_REF: qiao-all-in-one
+          DB_ONLY: true
+      - run: |
+          body="Status: [Deploying](https://fly.io/apps/${{ github.head_ref }}) ($(date))"
+          exit_code=0
+          gh issue comment ${{ github.event.number }} --edit-last -b "$body" || exit_code=$?
+          if [[ "$exit_code" -gt 0 ]]; then
+            gh issue comment ${{ github.event.number }} -b "$body"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: |
+          for i in {1..60}; do
+            status=$(flyctl m list -a ${{ github.head_ref }} --json | jq -r 'map(.checks)[0][0].status') || true
+            if [ "$status" == 'passing' ]; then
+              break
+            fi
+            echo "project not ready: $status"
+            sleep 2
+          done
+      - run: |
+          body="Status: [Ready](https://fly.io/apps/${{ github.head_ref }}) ($(date))
+          $COMMENT_BODY"
+          gh issue comment ${{ github.event.number }} --edit-last -b "$body"
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          COMMENT_BODY: |2
+            ```bash
+                API URL: http://${{ steps.deployment.outputs.hostname }}
+            GraphQL URL: http://${{ steps.deployment.outputs.hostname }}/graphql/v1
+                 DB URL: postgresql://postgres:postgres@${{ github.head_ref }}.fly.dev:5432/postgres
+               anon key: ${{ steps.deployment.outputs.anon_key }}
+            ```
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: |
+          supabase db push --db-url 'postgres://postgres:postgres@${{ steps.deployment.outputs.hostname }}/postgres'
