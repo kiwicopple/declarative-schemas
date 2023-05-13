@@ -13,5 +13,5 @@ dbname = "postgres"
 template = "template1"
 
 [migra]
-safe = true
+safe = false
 privileges = false
